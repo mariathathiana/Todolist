@@ -32,14 +32,14 @@ class CategoryActivity : AppCompatActivity() {
             insets
         }
 
-        val id = intent.getIntExtra(name= "CATEGORY_ID", defaultValue= -1)
+        val id = intent.getIntExtra("CATEGORY_ID",  -1)
 
-        categoryDAO = CategoryDAO(context = this)
+        categoryDAO = CategoryDAO( this)
 
         if (id != -1){
             category = categoryDAO.find(id)!!
         }else{
-            category= Category(id=-1, name = "")
+            category= Category(-1, "")
         }
 
         binding.nameEditText.editText?.setText(category.name)

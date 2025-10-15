@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.example.todolist.utils.DatabaseManager
+import com.example.todolist.data.Category
 
 class CategoryDAO (val context: Context){
 
@@ -19,6 +20,7 @@ class CategoryDAO (val context: Context){
     }
 
     fun insert(category: Category){
+
         val values = ContentValues()
         values.put(Category.COLUMN_NAME, category.name)
 
@@ -40,7 +42,7 @@ class CategoryDAO (val context: Context){
 
         try {
             open()
-            val updateRows =db.update(table = Category.TABLE_NAME, values, whereClause= "${Category.COLUMN_ID} = ${category.id}", null)
+            val updateRows =db.update(Category.TABLE_NAME, values, "${Category.COLUMN_ID} = ${category.id}", null)
             Log.i("DATABASE", "$updateRows rows updated in table ${Category.TABLE_NAME}")
         } catch (e: Exception){
             e.printStackTrace()
