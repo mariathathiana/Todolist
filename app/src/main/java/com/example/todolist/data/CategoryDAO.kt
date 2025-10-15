@@ -24,8 +24,8 @@ class CategoryDAO (val context: Context){
 
     try {
         open()
-        val newRowId = db.insert(table= Category.TABLE_NAME, nullColumnHack= null, values)
-        Log.i(tag="DATABASE", msg= "New row inserted in table ${Category.TABLE_NAME} with id: $newRowId")
+        val newRowId = db.insert(Category.TABLE_NAME,  null, values)
+        Log.i("DATABASE", "New row inserted in table ${Category.TABLE_NAME} with id: $newRowId")
     }catch (e:Exception){
         e.printStackTrace()
     }finally{
@@ -41,10 +41,24 @@ class CategoryDAO (val context: Context){
         try {
             open()
             val updateRows =db.update(table = Category.TABLE_NAME, values, whereClause= "${Category.COLUMN_ID} = ${category.id}", null)
-            Log.i(tag="DATABASE", msg="$updateRows rows updated in table ${Category.TABLE_NAME}")
+            Log.i("DATABASE", "$updateRows rows updated in table ${Category.TABLE_NAME}")
         } catch (e: Exception){
             e.printStackTrace()
         }finally {
+            close()
+        }
+    }
+
+    fun delete(id: Int) {
+        try {
+            open()
+
+            // Insert the new row, returning the primary key value of the new row
+            val deletedRows = db.delete(Category.TABLE_NAME, "${Category.COLUMN_ID} = $id", null)
+            Log.i("DATABASE", "$deletedRows rows deleted in table ${Category.TABLE_NAME}")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
             close()
         }
     }
@@ -60,18 +74,18 @@ class CategoryDAO (val context: Context){
         try {
             open()
             val cursor = db.query(
-                table= Category.TABLE_NAME,
-                columns= projection,
+                Category.TABLE_NAME,
+                projection,
                 selection,
                 selectionArgs,
-                groupBy=null,
-                having=null,
-                orderBy=sortOrder
+                null,
+                null,
+                sortOrder
             )
 
             if (cursor.moveToNext()){
-                val id = cursor.getInt(columnIndex= cursor.getColumnIndexOrThrow(Category.COLUMN_ID))
-                val name = cursor.getString(cursor.getColumnIndexOrThrow(columnName= Category.COLUMN_NAME))
+                val id = cursor.getInt( cursor.getColumnIndexOrThrow(Category.COLUMN_ID))
+                val name = cursor.getString(cursor.getColumnIndexOrThrow( Category.COLUMN_NAME))
                 category = Category(id, name)
             }
 
@@ -84,6 +98,41 @@ class CategoryDAO (val context: Context){
     }
 
     fun findAll(): List<Category>{
+        val items: MutableList<Category> = mutableListOf()
+
+        val projection= arrayOf(Category.COLUMN_ID, Category.COLUMN_NAME )
+
+        val  selection = null
+
+        val selectionArgs = null
+
+        val  sorterOrder = null
+
+        try {
+            open()
+
+            val cursor = db.query(
+                Category.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sorterOrder
+            )
+
+            while (cursor.moveToNext()){
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(Category.COLUMN_ID))
+                val name = cursor.getString(cursor.getColumnIndexOrThrow(Category.COLUMN_NAME))
+                val category = Category(id, name)
+                items.add(category)
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }finally {
+            close()
+        }
+        return items
 
     }
 
