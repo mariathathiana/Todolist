@@ -12,7 +12,7 @@ class Category (
         const val SQL_CREATE_TABLE =
             "CREATE TABLE $TABLE_NAME (" +
                     "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "$COLUMN_NAME TEXT"
+                    "$COLUMN_NAME TEXT"+
                     ");"
 
         const val SQL_DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME"
