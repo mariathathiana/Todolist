@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        supportActionBar?.title = "Mis categorias"
+
+        categoryDAO = CategoryDAO(this)
+
         adapter = CategoryAdapter(categoryList, { position ->
             // Click
         }, { position ->
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 .setTitle("Borrar categoria")
                 .setMessage("¿Está usted seguro de que quiere borrar la categoría: ${category.name}?")
                 .setPositiveButton("Si") { dialog, which ->
-                    categoryDAO.delete(id=category.id)
+                    categoryDAO.delete(category.id)
                     loadData()
                     Snackbar.make(
                         binding.root,
