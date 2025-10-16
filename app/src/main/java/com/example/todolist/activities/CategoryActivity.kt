@@ -44,7 +44,7 @@ class CategoryActivity : AppCompatActivity() {
 
         binding.nameEditText.editText?.setText(category.name)
 
-        binding.saveButton.setOnClickListener{
+        binding.saveButton.setOnClickListener {
             val name = binding.nameEditText.editText?.text.toString()
 
             category.name = name
