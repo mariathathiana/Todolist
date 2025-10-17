@@ -11,6 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Todolist">
+
+        <activity
+            android:name=".activities.TaskActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.TaskListActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.CategoryActivity"
             android:exported="false" />

@@ -10,7 +10,7 @@ class DatabaseManager(context: Context): SQLiteOpenHelper(
     context,
     "toDoList.db",
     null,
-    1
+    2
 
 )  {
 

@@ -9,6 +9,15 @@
     android:orientation="vertical"
     tools:context=".activities.CategoryActivity">
 
+    <!-- ✅ Toolbar añadido -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:titleTextColor="@android:color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameEditText"
         android:layout_width="match_parent"

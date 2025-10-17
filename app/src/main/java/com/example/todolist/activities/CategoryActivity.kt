@@ -1,6 +1,7 @@
 package com.example.todolist.activities
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,12 +11,11 @@ import com.example.todolist.data.Category
 import com.example.todolist.data.CategoryDAO
 import com.example.todolist.databinding.ActivityCategoryBinding
 
+
 class CategoryActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityCategoryBinding
-
     lateinit var categoryDAO: CategoryDAO
-
     lateinit var category: Category
 
 
@@ -26,20 +26,30 @@ class CategoryActivity : AppCompatActivity() {
         binding = ActivityCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbar)
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
 
-        val id = intent.getIntExtra("CATEGORY_ID",  -1)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        categoryDAO = CategoryDAO( this)
+        val id = intent.getIntExtra("CATEGORY_ID", -1)
 
-        if (id != -1){
+        categoryDAO = CategoryDAO(this)
+
+        if (id != -1) {
+            // Edit
             category = categoryDAO.find(id)!!
-        }else{
-            category= Category(-1, "")
+            supportActionBar?.title = "Editar categoría"
+        } else {
+            // Crear
+            category = Category(-1, "")
+            supportActionBar?.title = "Crear categoría"
         }
 
         binding.nameEditText.editText?.setText(category.name)
@@ -49,14 +59,23 @@ class CategoryActivity : AppCompatActivity() {
 
             category.name = name
 
-            if (category.id == -1){
+            if (category.id == -1) {
                 categoryDAO.insert(category)
-            }else{
+            } else {
                 categoryDAO.update(category)
             }
 
             finish()
         }
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }

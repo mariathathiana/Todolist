@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var categoryDAO: CategoryDAO
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -46,6 +44,10 @@ class MainActivity : AppCompatActivity() {
 
         adapter = CategoryAdapter(categoryList, { position ->
             // Click
+            val category = categoryList[position]
+            val intent = Intent(this, TaskListActivity::class.java)
+            intent.putExtra("CATEGORY_ID", category.id)
+            startActivity(intent)
         }, { position ->
             // Edit
             val category = categoryList[position]
@@ -62,11 +64,7 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton("Si") { dialog, which ->
                     categoryDAO.delete(category.id)
                     loadData()
-                    Snackbar.make(
-                        binding.root,
-                        "Categoría borrada correctamente",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(binding.root, "Categoría borrada correctamente", Snackbar.LENGTH_SHORT).show()
                     //Toast.makeText(this, "Categoría borrada correctamente", Toast.LENGTH_SHORT).show()
                 }
                 .setNegativeButton("No", null)
@@ -83,13 +81,9 @@ class MainActivity : AppCompatActivity() {
         binding.createButton.setOnClickListener {
             val intent = Intent(this, CategoryActivity::class.java)
             startActivity(intent)
-
-
         }
-
-
-
     }
+
     override fun onResume() {
         super.onResume()
 
